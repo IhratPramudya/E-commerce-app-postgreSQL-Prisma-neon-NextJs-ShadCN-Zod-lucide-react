@@ -17,7 +17,7 @@ const ProductDetailsPage = async (props: {params: Promise<{ slug: string }>}) =>
     return <>
         <section>
             <div className="grid grid-cols-1 md:grid md:grid-cols-5">
-                {/* Images Column */}
+                {/* Image Column */}
                 <div className="col-span-2">
                     <ProductImages images={product.images}/>
                 </div>

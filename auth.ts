@@ -15,6 +15,7 @@ export const config = {
         maxAge: 30 * 24 * 60 * 60,
     },
     adapter: PrismaAdapter(prisma),
+    secret: process.env.NEXTAUTH_SECRET,
     providers: [
         CredentialsProviders({
             credentials: {

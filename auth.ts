@@ -1,11 +1,11 @@
-import NextAuth from 'next-auth';
 import {PrismaAdapter} from '@auth/prisma-adapter';
 import {prisma} from '@/db/prisma';
 import CredentialsProviders from 'next-auth/providers/credentials';
 import { compareSync } from 'bcrypt-ts-edge';
 import type { NextAuthConfig } from 'next-auth';
+import NextAuth from 'next-auth';
 
-export const config = {
+const config =  {
     pages: {
         signIn: '/sign-in',
         error: '/sign-in',
@@ -85,8 +85,19 @@ export const config = {
                 }
             }
             return token;
+        },
+        authorized({ request, auth }: any) {
+            // Check for session cart cookie
+            if (!request.cookie.get('sessionCartId')) {
+                const sessionCartId = crypto.randomUUID();
+                console.log(sessionCartId)
+            } else {
+                return true;
+            }
         }
     }
 } satisfies NextAuthConfig;
+
+
 
 export const { handlers, auth, signIn, signOut } = NextAuth(config);

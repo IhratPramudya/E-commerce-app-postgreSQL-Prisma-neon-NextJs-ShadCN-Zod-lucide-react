@@ -1,5 +1,5 @@
 // middleware.ts
-import { randomUUID } from "crypto";
+
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -7,11 +7,13 @@ export async function middleware(req: NextRequest) {
 
     let sessionCartId = req.cookies.get("sessionCartId")?.value;
     console.log(sessionCartId);
+    console.log("ini type apa", typeof sessionCartId);
     let response = NextResponse.next();
 
 
     if (!sessionCartId) {
-        const newCartId = crypto.randomUUID();
+        const newCartId = crypto.randomUUID()
+        
         console.log(`Middleware: No sessionCartId found. Creating new: ${newCartId}`);
 
         response.cookies.set("sessionCartId", newCartId, {

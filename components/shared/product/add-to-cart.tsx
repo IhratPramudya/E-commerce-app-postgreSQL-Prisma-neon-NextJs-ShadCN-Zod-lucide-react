@@ -34,3 +34,5 @@ const AddToCart = ({ item }: { item: CartItem }) => {
 }
 
 export default AddToCart;
+
+

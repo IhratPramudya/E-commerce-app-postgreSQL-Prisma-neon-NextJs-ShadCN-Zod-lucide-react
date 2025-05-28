@@ -182,7 +182,14 @@ export async function removeItemFromCart(productId: string) {
                 items: cart.items as Prisma.CartUpdateitemsInput[],
                 ...calcPrice(cart.items as CartItem[]),
             }
-        })
+        }) 
+
+        revalidatePath(`/product/${product.slug}`)
+
+        return {
+            success: true,
+            message: `${product.name} was removed from cart`
+        }
 
     } catch (error) {
         return { 

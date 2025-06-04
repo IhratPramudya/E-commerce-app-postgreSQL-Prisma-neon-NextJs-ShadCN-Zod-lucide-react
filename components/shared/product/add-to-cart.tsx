@@ -2,11 +2,36 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Plus, Minus } from "lucide-react";
-import { Cart ,CartItem } from "@/types";
 import { Toaster, toast as sonnerToast } from 'sonner';
 import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";
 
 
+
+interface CartItem {
+  productId: string;
+  name: string;
+  slug: string;
+  qty: number;
+  image: string;
+  price: string; // atau number jika Anda lebih suka mengonversinya
+}
+
+interface Cart {
+  id: string;
+  userId: string | null; // Karena nilainya null di contoh
+  sessionCartId: string;
+  items: CartItem[];
+  itemsPrice: string; // atau number
+  totalPrice: string; // atau number
+  shippingPrice: string; // atau number
+  taxPrice: string; // atau number
+  createdAt: string; // atau Date jika Anda lebih suka mengonversinya
+}
+
+interface AddToCartProps {
+  cart?: Cart | null; // Izinkan null
+  item: CartItem;
+}
 
 
 type ToastVariant = 'default' | 'destructive' | 'success' | 'info' | 'warning';
@@ -55,7 +80,7 @@ const showCustomToast = (
     }
 }
 
-const AddToCart = ({ cart, item }: { cart?: Cart; item: CartItem }) => {
+const AddToCart: React.FC<AddToCartProps> = ({ cart, item }) => {
     const router = useRouter();
     
     const handleAddToCart = async () => {

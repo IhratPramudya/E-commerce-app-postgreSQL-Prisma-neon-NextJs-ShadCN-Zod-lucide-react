@@ -8,6 +8,27 @@ import AddToCart from "@/components/shared/product/add-to-cart";
 import { getMyCart } from "@/lib/actions/cart.actions";
 
 
+    interface CartItem {
+    productId: string;
+    name: string;
+    slug: string;
+    qty: number;
+    image: string;
+    price: string; // atau number jika Anda lebih suka mengonversinya
+    }
+
+    interface Cart {
+    id: string;
+    userId: string | null; // Karena nilainya null di contoh
+    sessionCartId: string;
+    items: CartItem[];
+    itemsPrice: string; // atau number
+    totalPrice: string; // atau number
+    shippingPrice: string; // atau number
+    taxPrice: string; // atau number
+    createdAt: string; // atau Date jika Anda lebih suka mengonversinya
+    }
+
 const ProductDetailsPage = async (props: {params: Promise<{ slug: string }>}) => {
     const { slug } = await props.params;
 
@@ -15,7 +36,9 @@ const ProductDetailsPage = async (props: {params: Promise<{ slug: string }>}) =>
 
     if(!product) notFound();
 
-    const cart = await getMyCart();
+    const cart = await getMyCart() as Cart | null;
+
+    console.log(cart);
     // console.log("ini cart KUUUUUU",cart);
 
     return <>

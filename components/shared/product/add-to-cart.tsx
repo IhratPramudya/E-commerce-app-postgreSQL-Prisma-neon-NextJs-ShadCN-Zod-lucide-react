@@ -95,11 +95,15 @@ const AddToCart: React.FC<AddToCartProps> = ({ cart, item }) => {
         }
 
 
-        sonnerToast.message("Informasi Untuk Menambahkan Cart", {
+        showCustomToast("Informasi Untuk Menambahkan Cart", {
             description: `${item.name} add to cart`,
-            action: <Button className="bg-primary text-white hover:bg-gray-800" 
-            onClick={() => router.push('/cart')}>Go to cart</Button>
-        })
+            action: {
+                label: 'Go to cart',
+                onClick: () => router.push('/cart'),
+            },
+            variant: "info"
+        });
+
     };
 
 
@@ -109,9 +113,9 @@ const AddToCart: React.FC<AddToCartProps> = ({ cart, item }) => {
         const res = await removeItemFromCart(item.productId);
 
 
-        showCustomToast('Informasi Sistem', {
+        showCustomToast('Data berhasil di hapus', {
             variant: res.success ? 'success' : 'destructive', // Logika variant Anda
-            duration: res.success ? 3000 : 5000,
+            duration: res.success ? 15000 : 20000,
         });
     }
 

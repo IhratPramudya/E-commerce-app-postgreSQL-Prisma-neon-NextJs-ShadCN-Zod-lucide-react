@@ -1,10 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus, Loader } from "lucide-react";
 import { Toaster, toast as sonnerToast } from 'sonner';
 import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";
-
+import { useTransition } from "react";
 
 
 interface CartItem {
@@ -82,41 +82,50 @@ const showCustomToast = (
 
 const AddToCart: React.FC<AddToCartProps> = ({ cart, item }) => {
     const router = useRouter();
+
+    const [ isPending, startTransition ] = useTransition();
     
     const handleAddToCart = async () => {
-        const res = await addItemToCart(item);
-        console.log(res)
+        startTransition(async () => {
+            const res = await addItemToCart(item);
+            console.log(res)
 
-        if (!res.success) {
-            sonnerToast.message('Information', {
-                description: res.message
-            })
-            return
-        }
+            if (!res.success) {
+                sonnerToast.message('Information', {
+                    description: res.message
+                })
+                return
+            }
 
 
-        showCustomToast("Informasi Untuk Menambahkan Cart", {
-            description: `${item.name} add to cart`,
-            action: {
-                label: 'Go to cart',
-                onClick: () => router.push('/cart'),
-            },
-            variant: "info"
-        });
+            showCustomToast("Informasi Untuk Menambahkan Cart", {
+                description: `${item.name} add to cart`,
+                action: {
+                    label: 'Go to cart',
+                    onClick: () => router.push('/cart'),
+                },
+                variant: "info"
+            });
 
+            return;
+        })
     };
 
 
 
     // Handle remove from cart
     const handleRemoveFromCart = async () => {
-        const res = await removeItemFromCart(item.productId);
+        startTransition(async () => {
+            const res = await removeItemFromCart(item.productId);
 
 
-        showCustomToast('Data berhasil di hapus', {
-            variant: res.success ? 'success' : 'destructive', // Logika variant Anda
-            duration: res.success ? 15000 : 20000,
-        });
+            showCustomToast('Data berhasil di hapus', {
+                variant: res.success ? 'success' : 'destructive', // Logika variant Anda
+                duration: 0,
+            });
+
+            return;
+        })
     }
 
     // Check if item is in cart
@@ -128,15 +137,17 @@ const AddToCart: React.FC<AddToCartProps> = ({ cart, item }) => {
                 type="button" 
                 variant="outline"
                 onClick={handleRemoveFromCart} >
-                <Minus className="h-4 w-4"/>
+                { isPending ? (<Loader className="w-4 h-4 animate-spin" />) : 
+                (<Minus className="w-4 h-4 " />) }
             </Button>
             <span className="px-2">{existItem.qty}</span>
             <Button 
                 type="button"
                 variant="outline"
                 onClick={handleAddToCart}
-                >
-                <Plus className="h-4 w-4" />
+                >       
+                { isPending ? (<Loader className="w-4 h-4 animate-spin" />) : 
+                (<Plus className="h-4 w-4" />) }
             </Button>
         </div>
     ) : (

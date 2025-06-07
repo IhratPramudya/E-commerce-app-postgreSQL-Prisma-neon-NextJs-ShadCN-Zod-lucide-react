@@ -8,7 +8,7 @@ export const metadata = {
 
 
 const CartPage = async () => {
-    const cart = await getMyCart() as Cart | null; 
+    const cart = await getMyCart() as Cart | null;
 
     return (
         <>

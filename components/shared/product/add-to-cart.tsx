@@ -34,9 +34,9 @@ interface AddToCartProps {
 }
 
 
-type ToastVariant = 'default' | 'destructive' | 'success' | 'info' | 'warning';
+export type ToastVariant = 'default' | 'destructive' | 'success' | 'info' | 'warning';
 
-interface CustomToastOptions {
+export interface CustomToastOptions {
     description?: string;
     duration?: number;
     action?: {
@@ -79,6 +79,7 @@ const showCustomToast = (
                 break;
     }
 }
+
 
 const AddToCart: React.FC<AddToCartProps> = ({ cart, item }) => {
     const router = useRouter();

@@ -8,6 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { CustomToastOptions, ToastVariant } from "@/components/shared/product/add-to-cart";
 import { Toaster, toast as sonnerToast } from 'sonner';
+import { getProductBySlug } from "@/lib/actions/product.actions";
 
 interface Item {
   id: number;
@@ -57,31 +58,39 @@ const CartTable: React.FC<AddPageProps> = ({ cart }) => {
     const router = useRouter();
     const [ isPending, startTransition ] = useTransition();
     
-    // const handleAddToCart = async () => {
-    //     startTransition(async () => {
-    //         const res = await addItemToCart(item);
-    //         console.log(res)
+    const handleAddToCart = async (slug: any) => {
+        startTransition(async () => {
+            const product = await getProductBySlug(slug)
+            const res = await addItemToCart({
+              productId: product?.id ?? '',
+              name: product?.name ?? '',
+              slug: product?.slug ?? '',
+              price: String(product?.price ?? 0),
+              qty: 1,
+              image: product?.images?.[0] ?? ''
+            });
+            console.log(res)
 
-    //         if (!res.success) {
-    //             sonnerToast.message('Information', {
-    //                 description: res.message
-    //             })
-    //             return
-    //         }
+            if (!res.success) {
+                sonnerToast.message('Information', {
+                    description: res.message
+                })
+                return
+            }
 
 
-    //         showCustomToast("Informasi Untuk Menambahkan Cart", {
-    //             description: `${item.name} add to cart`,
-    //             action: {
-    //                 label: 'Go to cart',
-    //                 onClick: () => router.push('/cart'),
-    //             },
-    //             variant: "info"
-    //         });
+            showCustomToast("Informasi Untuk Menambahkan Cart", {
+                description: `${product?.name} add to cart`,
+                action: {
+                    label: 'Go to cart',
+                    onClick: () => router.push('/cart'),
+                },
+                variant: "info"
+            });
 
-    //         return;
-    //     })
-    // };
+            return;
+        })
+    };
 
     // Handle remove from cart
     const handleRemoveFromCart = async (productId: string) => {
@@ -113,6 +122,9 @@ const CartTable: React.FC<AddPageProps> = ({ cart }) => {
                   key={item.productId}
                   className="flex flex-col md:flex-row items-center justify-between bg-white p-4 rounded-lg transition-shadow shadow-lg"
                 >
+                  <div>
+                    <Image src={item.image} alt="product image" width={100} height={100} />
+                  </div>
                   {/* Bagian Informasi Produk */}
                   <div className="flex-grow mb-4 md:mb-0">
                     <h3 className="text-lg font-semibold text-gray-900">{item.name}</h3>
@@ -135,7 +147,7 @@ const CartTable: React.FC<AddPageProps> = ({ cart }) => {
                       cart && cart.items.find((x) => x.productId === item.productId)?.qty
                       }</span>
                     <button
-                      // onClick={() => handleAddToCart()}
+                      onClick={() => handleAddToCart(item.slug)}
                       className="px-3 py-1 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors"
                       aria-label="Tambah kuantitas"
                     >

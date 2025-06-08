@@ -47,7 +47,7 @@ export interface CustomToastOptions {
 }
 
 
-const showCustomToast = (
+export const showCustomToast = (
     title: string,
     options: CustomToastOptions & { variant: ToastVariant }
 ) => {
@@ -57,7 +57,8 @@ const showCustomToast = (
     const sonnerOptions = {
         description,
         duration,
-        action
+        action,
+        variant 
     }
 
     switch (variant) {

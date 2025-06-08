@@ -9,6 +9,8 @@ import Image from "next/image";
 import { CustomToastOptions, ToastVariant } from "@/components/shared/product/add-to-cart";
 import { Toaster, toast as sonnerToast } from 'sonner';
 import { getProductBySlug } from "@/lib/actions/product.actions";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface Item {
   id: number;
@@ -115,7 +117,8 @@ const CartTable: React.FC<AddPageProps> = ({ cart }) => {
             Cart is empty. <Link href='/'>Go Shopping</Link>
           </div>
         ) : (
-            <div className="space-y-10 mt-6">
+          <div className="grid md:grid-cols-4 md:gap-5">
+            <div className="space-y-10 col-span-3">
               {cart.items.map(item => (
                 
                 <div
@@ -143,7 +146,7 @@ const CartTable: React.FC<AddPageProps> = ({ cart }) => {
                       -
                     </button>
                     
-                    <span className="text-lg font-medium w-8 text-center">{
+                    <span className="text-lg font-medium w-8 text-center bg-gray-400">{
                       cart && cart.items.find((x) => x.productId === item.productId)?.qty
                       }</span>
                     <button
@@ -156,7 +159,7 @@ const CartTable: React.FC<AddPageProps> = ({ cart }) => {
                   </div>
         
                   {/* Bagian Total Harga per Item */}
-                  <div className="text-right w-full ml-6 md:w-auto">
+                  <div className="text-right w-full ml-3 md:w-auto">
                     <p className="font-bold text-gray-800">
                       Rp {(Number(item.price) * (cart?.items.find((x) => x.productId === item.productId)?.qty || 0)).toLocaleString('id-ID')}
                     </p>
@@ -164,6 +167,26 @@ const CartTable: React.FC<AddPageProps> = ({ cart }) => {
                 </div>
               ))}
             </div>
+            <Card>
+              <CardContent className="p-4 col-span-1">
+                <div className="pb-3 text-xl">
+                    Subtotal ({ cart.items.reduce((a, c) => a + c.qty, 0) })
+                    <span className="font-bold">
+                        RP {cart.itemsPrice.toLocaleString()}
+                    </span>
+                </div>
+                <Button className="w-full" disabled={isPending} onClick={() => 
+                  startTransition(() => router.push('/shipping-address'))
+                }>
+                  {isPending ? (
+                    <Loader className="w-4 h-4 animate-spin"/>
+                  ) : (
+                    <ArrowRight className="w-4 h-4" />
+                  )} Proceed to Checkout
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
         )}
     </>
 }

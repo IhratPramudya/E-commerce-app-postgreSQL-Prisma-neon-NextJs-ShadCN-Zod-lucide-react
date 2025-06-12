@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from "next/navigation";
-import { useTransition, useState } from "react";
+import { useTransition, useState, useEffect } from "react";
 import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";
 import { ArrowRight, Loader, Minus, Plus } from "lucide-react";
 import { Cart, CartItem } from "@/types";
@@ -108,6 +108,7 @@ const CartTable: React.FC<AddPageProps> = ({ cart }) => {
             return;
         })
     }
+
 
   
     return <>

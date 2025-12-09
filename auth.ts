@@ -5,7 +5,6 @@ import { compareSync } from 'bcrypt-ts-edge';
 import type { NextAuthConfig } from 'next-auth';
 import NextAuth from 'next-auth';
 import { cookies } from 'next/headers';
-import { use } from 'react';
 
 const config =  {
     pages: {
@@ -117,6 +116,28 @@ const config =  {
             }
             return token;
         },
+        authorized({ request, auth }: any) {
+            // Array  of regex patterns of paths we want to protect
+            const protectedPaths = [
+                /\/shipping-address/,
+                /\/payment-method/,
+                /\/place-order/,
+                /\/user\/(.*)/,
+                /\/order\/(.*)/,
+                /\/admin/,
+            ]
+
+            // Get pathname from the req URL object
+
+
+            // Check for session cart cookies
+            const { pathname } = request.nextUrl;
+            
+            // Check if user is not authenticated and accessing a protected path
+
+            if (!auth && protectedPaths.some((p) => p.test(pathname))) return false
+
+        }
     }
 } satisfies NextAuthConfig;
 

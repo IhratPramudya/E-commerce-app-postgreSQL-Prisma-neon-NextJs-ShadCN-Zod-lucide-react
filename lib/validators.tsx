@@ -1,5 +1,5 @@
 
-import { z } from "zod";
+import { number, string, z } from "zod";
 import { formatNumberWithDecimal } from "./utils";
 
 const currency = z
@@ -74,3 +74,16 @@ export const shippingAddressSchema = z.object({
     lat: z.number().optional(),
     lng: z.number().optional(),
 })
+
+
+
+export const OrderDetails = z.object({
+    id: z.string(),
+    items: z.array(z.object({
+        name: z.string(),
+        price: z.number(),
+        qty: z.number(),
+    })),
+    total: z.number(),
+    tax: z.number()
+});

@@ -57,9 +57,11 @@ const showCustomToast = (
             sonnerToast.warning(title, sonnerOptions);
             break;
         case 'default':
-            default:
-                sonnerToast(title, sonnerOptions)
-                break;
+            sonnerToast(title, sonnerOptions);
+            break;
+        default:
+            sonnerToast(title, sonnerOptions)
+            break;
     }
 }
 
@@ -79,11 +81,15 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 
 
             if(!res.success) {
-                showCustomToast("Perhatian", {
+                // Normalize message which may be a string or a Promise; coerce to string
+                const message = typeof res.message === "string"
+                    ? res.message
+                    : String(await res.message);
+                showCustomToast("Attention", {
                     variant: "destructive",
-                    description: await res.message
-                })
-                return
+                    description: message || undefined
+                });
+                return;
             }
 
 

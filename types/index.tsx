@@ -22,5 +22,5 @@ export type OrderDetails = z.infer<typeof OrderDetails>;
 
 
 // Tipe datauntuk Metode pembayaran
-export type PaymentMethodType = 'QRIS' | 'VA' | 'CC' | 'EWALLET';
-export type BankCode = 'BCA' | 'BNI' | 'BRI' | 'MANDIRI';
+// export type PaymentMethodType = 'QRIS' | 'VA' | 'CC' | 'EWALLET';
+// export type BankCode = 'BCA' | 'BNI' | 'BRI' | 'MANDIRI';

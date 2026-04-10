@@ -198,30 +198,3 @@ export async function removeItemFromCart(productId: string) {
          }
     }
 }
-
-
-// export async function mergeUserCartWithAnonymouseCart() {
-//     const session = await auth();
-//     const headersList = headers();
-//     const sessionCartId = (await headersList).get("sessionCartId");
-
-//     if (!sessionCartId) {
-//         console.log("mergeUserCartWithAnonymouseCart: sessionCartId header missing")
-//         return { success: false, message: "sessionCartId header missing" };
-//     }
-
-//     if (!session || !session.user?.id) {
-//         console.log(`mergeUserCartWithAnonymouseCart: User not logged in or user ID missing. Using anonymouse cart ${sessionCartId}`);
-
-
-//         const anonymouseCart = await prisma.cart.findFirst({
-//             where: { sessionCartId: sessionCartId },
-//         })
-
-//         return { success: true, cart: anonymouseCart }
-//     }
-
-//       console.log(`mergeUserCartWithAnonymousCart: User logged in: ${session.user.id}. Attempting to merge carts.`);
-
-//       let userCart = await prisma.cart.findFirst
-// }

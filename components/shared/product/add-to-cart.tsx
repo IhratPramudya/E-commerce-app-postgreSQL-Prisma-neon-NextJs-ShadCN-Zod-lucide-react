@@ -6,7 +6,6 @@ import { Toaster, toast as sonnerToast } from 'sonner';
 import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";
 import { useTransition } from "react";
 
-
 interface CartItem {
   productId: string;
   name: string;
@@ -33,7 +32,6 @@ interface AddToCartProps {
   item: CartItem;
 }
 
-
 export type ToastVariant = 'default' | 'destructive' | 'success' | 'info' | 'warning';
 
 export interface CustomToastOptions {
@@ -45,7 +43,6 @@ export interface CustomToastOptions {
     };
 // Tambahkan opsi lain dari sonner yang ingin Anda dukung
 }
-
 
 export const showCustomToast = (
     title: string,
@@ -80,7 +77,6 @@ export const showCustomToast = (
                 break;
     }
 }
-
 
 const AddToCart: React.FC<AddToCartProps> = ({ cart, item }) => {
     const router = useRouter();

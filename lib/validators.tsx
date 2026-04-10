@@ -87,3 +87,34 @@ export const OrderDetails = z.object({
     total: z.number(),
     tax: z.number()
 });
+
+// Helper untuk Luhn Algorithm (Validasi nomor kartu kresit asli)
+
+function luhnCheck(val: string) {
+    let checksum = 0;
+    let j = 1;
+    for (let i = val.length - 1; i >= 0; i--) {
+        let calc = 0;
+        calc = Number(val.charAt(i)) * j;
+        if (calc > 9) {
+            checksum = checksum + 1;
+            calc = calc - 10;
+        }
+        checksum = checksum + calc;
+        if (j == 1) { j = 2 } else { j = 1 };
+    }
+    return (checksum % 10) == 0;
+}
+
+export const paymentSchema = z.object({
+    holderName: z.string().min(2, "Nama pemegang kartu wajib diisi"),
+    cardNumber: z.string()
+        .regex(/^\d+$/, "Hanya angka diperbolehkan")
+        .min(13, "Nomor kartu terlalu pendek")
+        .max(19, "Nomer kartu terlalu panjang")
+        .refine(luhnCheck, "Nomor kartu tidak valid (Luhn check failed)"),
+    expiryDate: z.string().regex(/^(0[1-9]|1[0-2])\/\d{2}$/, "Format harus MM/YY"),
+    cvc: z.string().regex(/^\d{3,4}$/, "CVC harus 3 atau 4 digit"),
+});
+
+
